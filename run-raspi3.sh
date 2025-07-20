@@ -38,7 +38,7 @@ args+=(
               bcm2708_fb.fbwidth=720 bcm2708_fb.fbheight=480
               bcm2708_fb.fbdepth=16 bcm2708_fb.fbswap=1 vc_mem.mem_base=0x3f000000
               vc_mem.mem_size=0x3f600000 dwc_otg.lpm_enable=0
-              root=/dev/mmcblk0p2 rootfstype=ext4 rootdelay=1 elevator=deadline fsck.repair=yes
+              root=/dev/mmcblk0p2 rootfstype=ext4 rootdelay=1 fsck.repair=yes
               verbosity=2 net.ifnames=0"
 
 # Other kernel cmdline options:
