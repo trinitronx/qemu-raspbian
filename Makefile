@@ -5,9 +5,10 @@ TOP_BUILDDIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 MNT_DIR := $(TOP_BUILDDIR)/mnt
 QEMU_BOOT_FILES := kernel8.img bcm2710-rpi-3-b.dtb bcm2711-rpi-4-b.dtb
 
-# Default insecure pi user password: raspberrypi
+# Default insecure pi user password: raspberrypiqemu
+# Format: user:passwd-hash
 # Escape any '$' chars as '$$'
-USER_PASSWD := 'pi:$$6$$6jHfJHU59JxxUfOS$$k9natRNnu0AaeS/S9/IeVgSkwkYAjwJfGuYfnwsUoBxlNocOn.5yIdLRdSeHRiw8EWbbfwNSgx9/vUhu0NqF50'
+USER_PASSWD := 'pi:$$y$$j9T$$2MdMxvUK1HOxHNKulVFf51$$GOVSJ4TrUwW5kyu.F7rxFbkDK23UbxUkysSsSW9jK08'
 
 $(IMG):
 	./get-rpi-img.sh
