@@ -1,2 +1,6 @@
 mnt/boot
 mnt/root
+*.dtb
+*.dts
+*.qcow2
+*.img
