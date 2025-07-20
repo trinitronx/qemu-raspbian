@@ -64,6 +64,14 @@ $(QEMU_BOOT_FILES): $(IMG_QCOW2)
 	dtc -I dts -O dtb -o $@ $*.dts.patched
 	chmod +x $@
 
+export IMG_QCOW2
+.PHONY: run-raspi4 run-raspi3
+run-raspi4: | $(QEMU_BOOT_FILES) $(filter-out bcm2710-rpi-3-b.dtb,$(QEMU_BOOT_FILES))
+	$(TOP_BUILDDIR)/run-raspi4.sh
+
+run-raspi3: | $(QEMU_BOOT_FILES) $(filter-out bcm2711-rpi-4-b.dtb,$(QEMU_BOOT_FILES))
+	$(TOP_BUILDDIR)/run-raspi3.sh
+
 clean::
 	rm -f $(QEMU_BOOT_FILES)
 
