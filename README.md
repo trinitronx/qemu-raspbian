@@ -1,3 +1,33 @@
+<!-- markdownlint-configure-file
+{
+  "required-headings": {
+    "headings": [
+      "# QEMU Raspberry Pi Emulator",
+      "*",
+      "## Features",
+      "*",
+      "## Requirements",
+      "*",
+      "## Sponsor",
+      "*",
+      "## Setup",
+      "*",
+      "## Usage",
+      "*",
+      "## Default Credentials",
+      "*",
+      "## Networking",
+      "*",
+      "## File Structure",
+      "*",
+      "## Maintenance",
+      "*",
+      "## Notes",
+      "*"
+    ]
+  }
+}
+-->
 # QEMU Raspberry Pi Emulator
 
 This project provides a `Makefile` and scripts to help boot Raspberry Pi OS
@@ -34,6 +64,26 @@ downloading, modification, and QEMU setup automatically.
 - `unxz` / `xz`
 - `bridge-utils` (for `libvirt` networking)
 
+## Sponsor
+
+If you find this project useful and appreciate my work,
+would you be willing to click one of the buttons below to Sponsor this project
+and help me continue?
+
+<!-- markdownlint-disable MD033  -->
+| Method       | Button                                                                                                                               |
+| :----------- | :----------------------------------------------------------------------------------------------------------------------------------: |
+| GitHub       | [💖 Sponsor](https://github.com/sponsors/trinitronx)                                                                                 |
+| Liberapay    | [![Support with Liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/trinitronx/donate)                |
+| PayPal       | [![Support with PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/JamesCuzella)              |
+| Ko-Fi        | [![Support with Ko-Fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/trinitronx)                                     |
+| BuyMeACoffee | [<img alt="Buy Me A Coffee" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="51px" width="180px" />](https://www.buymeacoffee.com/TrinitronX) |
+| Polar        | [![Support with Polar](https://polar.sh/embed/seeks-funding-shield.svg?org=lyraphase)](https://polar.sh/lyraphase)                   |
+| Patreon <sup>(_my artist page_)</sup> | [![Support with Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dphasik%26type%3Dpatrons&style=for-the-badge)](https://www.patreon.com/bePatron?u=16585899)                                     |
+<!-- markdownlint-enable MD033  -->
+
+Every little bit is appreciated! Thank you! 🙏
+
 ## Setup
 
 1. Clone this repository
@@ -53,11 +103,13 @@ The Makefile will:
 ## Usage
 
 To run Raspberry Pi 3B:
+
 ```shell
 make run-raspi3
 ```
 
 To run Raspberry Pi 4B:
+
 ```shell
 make run-raspi4
 ```
@@ -83,14 +135,44 @@ The virtual machine is configured with:
 - Bridged networking using `virbr0`
 - SSH access (your public key is copied from `~/.ssh/authorized_keys`)
 
-To SSH to the VM when in bridged networking mode, check the VM's IP address visible in the `getty` login window.  Then run:
-
+To SSH to the VM when in bridged networking mode, check the VM's IP address
+visible in the `getty` login window.  Then run:
 
 ```shell
 ssh -o UserKnownHostsFile=/dev/null pi@$IP_HERE
 ```
 
-To use local networking with only a forwarded port, comment out the related  `-netdev bridge` lines from the appropriate `run-raspi*.sh` script.  For example:
+An example `libvirt` network XML for the `default` network is:
+
+```xml
+<network>
+  <name>default</name>
+  <uuid>906207b9-6fee-426d-8547-e97d3b37e0bb</uuid>
+  <forward mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+  </forward>
+  <bridge name='virbr0' stp='on' delay='0'/>
+  <mac address='52:54:00:aa:6b:40'/>
+  <ip address='192.168.122.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.122.2' end='192.168.122.254'/>
+    </dhcp>
+  </ip>
+</network>
+```
+
+Place the file contents in `default.xml` and run:
+
+```shell
+sudo virsh net-define  /tmp/default.xml
+sudo virsh net-start default
+```
+
+To use local networking with only a forwarded port instead, comment out the
+related `-netdev bridge` lines from the appropriate `run-raspi*.sh` script.  For
+example:
 
 ```shell
 # Bridged via libvirt virbr0 (must be created manually)
@@ -124,6 +206,7 @@ ssh -o UserKnownHostsFile=/dev/null -p 5555 pi@127.0.1.1
 ## Maintenance
 
 To clean up:
+
 ```shell
 make clean      # Remove generated QEMU boot files
 make clean-all  # Remove all downloaded and generated files
@@ -137,7 +220,9 @@ QEMU boot files include:
 
 ## Notes
 
-- The Raspberry Pi 4 configuration includes a patched device tree that enables USB functionality
+<!-- markdownlint-disable MD046 -->
+- The Raspberry Pi 4 configuration includes a device tree patch that enables
+  USB functionality
 - Both configurations include USB keyboard and mouse support
 - The image is pre-configured for headless operation with SSH enabled
 - The default password is insecure, and can be changed at the top of the `Makefile`
@@ -147,3 +232,4 @@ QEMU boot files include:
     - For example, the above would become:
 
           pi:$$6$$6jHfJHU59JxxUfOS$$k9natRNnu0AaeS/S9/IeVgSkwkYAjwJfGuYfnwsUoBxlNocOn.5yIdLRdSeHRiw8EWbbfwNSgx9/vUhu0NqF50
+<!-- markdownlint-enable MD046  -->
