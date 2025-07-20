@@ -32,7 +32,7 @@ args+=(
     -kernel kernel8.img
     -dtb bcm2711-rpi-4-b.mod.dtb
     #-append "console=ttyAMA0,115200 earlyprintk loglevel=8 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2 rw rootwait rootfstype=ext4"
-    -append  "rw earlyprintk loglevel=8 console=ttyAMA0,115200 console=tty1
+    -append  "rw earlyprintk loglevel=8 console=ttyAMA1,115200 console=tty1
               coherent_pool=1M 8250.nr_uarts=0
               snd_bcm2835.enable_headphones=1 snd_bcm2835.enable_hdmi=1
               bcm2708_fb.fbwidth=720 bcm2708_fb.fbheight=480
