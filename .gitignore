@@ -4,3 +4,4 @@ mnt/root
 *.dts
 *.qcow2
 *.img
+*.dts.patched
