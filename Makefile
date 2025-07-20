@@ -36,7 +36,7 @@ $(IMG_QCOW2): $(IMG)
 	sync $(IMG_QCOW2) && sleep 0.5
 	sudo qemu-nbd --disconnect /dev/nbd0
 
-$(QEMU_BOOT_FILES): $(IMG_QCOW2)
+$(QEMU_BOOT_FILES): | $(IMG_QCOW2)
 	sudo qemu-nbd -c /dev/nbd0  "$(IMG_QCOW2)"
 	sudo mount -t vfat /dev/nbd0p1  "$(MNT_DIR)"/boot
 	cp $(addprefix '$(MNT_DIR)'/boot/,$(QEMU_BOOT_FILES))  "$(TOP_BUILDDIR)/"
