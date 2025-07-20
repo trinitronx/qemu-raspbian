@@ -40,21 +40,25 @@ $(QEMU_BOOT_FILES): $(IMG_QCOW2)
 	sudo qemu-nbd -c /dev/nbd0  "$(IMG_QCOW2)"
 	sudo mount -t vfat /dev/nbd0p1  "$(MNT_DIR)"/boot
 	cp $(addprefix '$(MNT_DIR)'/boot/,$(QEMU_BOOT_FILES))  "$(TOP_BUILDDIR)/"
-	touch $(QEMU_BOOT_FILES)
 	sync --file-system "$(MNT_DIR)"/boot && sleep 0.5
 	sudo umount "$(MNT_DIR)"/boot
 	sync $(IMG_QCOW2) && sleep 0.5
 	sudo qemu-nbd --disconnect /dev/nbd0
+	touch $(QEMU_BOOT_FILES)
 
+
+.SECONDARY: $(subst .dtb,.dts,$(filter %.dtb,$(QEMU_BOOT_FILES))) $(subst .dtb,.dts.patched,$(filter %.dtb,$(QEMU_BOOT_FILES)))
 %.dtb: $(QEMU_BOOT_FILES)
 %.dts: %.dtb
 	dtc -I dtb -O dts -o $@ $*.dtb
+	touch $@
 
 %.dts.patched: %.dts.patch %.dts
 	cp $*.dts $*.dts.bak
 	cd "$(TOP_BUILDDIR)" && patch -p1 < '$<'
 	mv $*.dts $*.dts.patched
 	mv $*.dts.bak $*.dts
+	touch $*.dts.patched
 
 %.mod.dtb: %.dts.patched
 	dtc -I dts -O dtb -o $@ $*.dts.patched
