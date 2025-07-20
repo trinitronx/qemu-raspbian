@@ -1,0 +1,10 @@
+--- a/bcm2711-rpi-4-b.dts	2025-07-19 12:45:55.474766594 -0600
++++ b/bcm2711-rpi-4-b.dts	2025-07-19 12:46:18.567997783 -0600
+@@ -1482,7 +1482,7 @@
+ 			phy-names = "usb2-phy";
+ 			power-domains = <0x10 0x06>;
+ 			interrupt-names = "usb", "soft";
+-			status = "disabled";
++			status = "okay";
+ 			phandle = <0xc5>;
+ 		};
