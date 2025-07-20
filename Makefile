@@ -79,3 +79,4 @@ clean::
 clean-all:: clean
 	rm -f "$(IMG)"
 	rm -f "$(IMG_QCOW2)"
+	rm -f *.dts *.dtb *.dts.patched
