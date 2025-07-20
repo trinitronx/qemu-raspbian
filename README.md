@@ -79,7 +79,7 @@ and help me continue?
 | Ko-Fi        | [![Support with Ko-Fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/trinitronx)                                     |
 | BuyMeACoffee | [![Buy Me a Coffee](https://trinitronx.github.io/assets/img/bmc-button-medium.svg)](https://www.buymeacoffee.com/TrinitronX) |
 | Polar        | [![Support with Polar](https://trinitronx.github.io/assets/img/polar-button-medium-dark.svg)](https://polar.sh/lyraphase)                   |
-| Patreon <sup>(_my artist page_)</sup> | [![Support with Patreon](https://img.shields.io/badge/dynamic/json?logo=patreon&style=for-the-badge&color=ffac10&label=Patreon&query=data.attributes.patron_count&suffix=%20patrons&url=https%3A%2F%2Fwww.patreon.com%2Fapi%2Fcampaigns%2F2379189)](https://www.patreon.com/bePatron?u=16585899)                                     |
+| Patreon <sup>(_my artist page_)</sup> | [![Support with Patreon](https://img.shields.io/badge/dynamic/json?logo=patreon&style=for-the-badge&color=ffac00&label=Patreon&query=data.attributes.patron_count&suffix=%20patrons&url=https%3A%2F%2Fwww.patreon.com%2Fapi%2Fcampaigns%2F2379189)](https://www.patreon.com/bePatron?u=16585899)                                     |
 <!-- markdownlint-enable MD033  -->
 
 Every little bit is appreciated! Thank you! 🙏
