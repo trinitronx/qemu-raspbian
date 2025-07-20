@@ -66,7 +66,7 @@ $(QEMU_BOOT_FILES): $(IMG_QCOW2)
 
 export IMG_QCOW2
 .PHONY: run-raspi4 run-raspi3
-run-raspi4: | $(QEMU_BOOT_FILES) $(filter-out bcm2710-rpi-3-b.dtb,$(QEMU_BOOT_FILES))
+run-raspi4: | $(QEMU_BOOT_FILES) $(subst .dtb,.mod.dtb,$(filter-out bcm2710-rpi-3-b.dtb,$(QEMU_BOOT_FILES)))
 	$(TOP_BUILDDIR)/run-raspi4.sh
 
 run-raspi3: | $(QEMU_BOOT_FILES) $(filter-out bcm2711-rpi-4-b.dtb,$(QEMU_BOOT_FILES))
