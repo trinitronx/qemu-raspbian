@@ -65,7 +65,7 @@ args+=(
 # # Group 3: Storage and block devices
 args+=(
     #-sd "$IMG_QCOW2"
-    -blockdev '{"driver":"file","filename":"'${IMG_QCOW2}'","node-name":"libvirt-2-storage","auto-read-only":true,"discard":"unmap"}'
+    -blockdev '{"driver":"file","filename":"'"${IMG_QCOW2}"'","node-name":"libvirt-2-storage","auto-read-only":true,"discard":"unmap"}'
     -blockdev '{"node-name":"libvirt-2-format","read-only":false,"discard":"unmap","driver":"qcow2","file":"libvirt-2-storage","backing":null, "detect-zeroes":"unmap"}'
     -device '{"driver":"sd-card","drive":"libvirt-2-format","id":"virtio-disk0"}'
 #    -device '{"driver":"ide-cd","bus":"ide.0","id":"sata0-0-0","bootindex":2}'
