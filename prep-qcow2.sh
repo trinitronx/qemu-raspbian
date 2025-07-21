@@ -3,6 +3,17 @@
 # bail if any unset variable is referenced
 set -u
 
+function isPowerOf2() {
+    local n=$1 i=0
+    for ((; n>1; n/=2, i++)); do :; done
+    (($1 - (2 ** $i) == 0))
+}
+
+# Round a disk size number up to the next power of 2
+# SD card size has to be a power of 2, e.g. 16 GiB.
+function qcow2Pow2RoundUp() {
+}
+
 qemu-img convert -f raw -O qcow2 -o compression_type=zstd "${IMG}"  "${IMG_QCOW2}"
 qemu-img resize "${IMG_QCOW2}" 4G
 sudo qemu-nbd -c /dev/nbd0  "${IMG_QCOW2}"
