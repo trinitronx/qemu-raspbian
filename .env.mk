@@ -6,5 +6,5 @@ IMG := $(subst .xz,,$(notdir $(IMG_URL)))
 # Default insecure pi user password: raspberrypiqemu
 # Format: user:passwd-hash
 # Escape any '$' chars as '$$'
-USER_PASSWD := 'pi:$$y$$j9T$$2MdMxvUK1HOxHNKulVFf51$$GOVSJ4TrUwW5kyu.F7rxFbkDK23UbxUkysSsSW9jK08'
+USER_PASSWD := pi:$$y$$j9T$$2MdMxvUK1HOxHNKulVFf51$$GOVSJ4TrUwW5kyu.F7rxFbkDK23UbxUkysSsSW9jK08
 

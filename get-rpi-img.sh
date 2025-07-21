@@ -5,4 +5,4 @@ set -o nounset
 
 wget "$IMG_URL"
 echo "Uncompressing image..." >&2
-unxz "$IMG"
+unxz "${IMG_URL##*/}"
