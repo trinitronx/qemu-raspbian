@@ -14,12 +14,13 @@ echo "${USER_PASSWD}" | sudo tee "${MNT_DIR}"/boot/userconf 2>/dev/null 1>&2
 echo -e 'otg_mode=0\ndtoverlay=dwc2' | sudo tee -a "${MNT_DIR}"/boot/config.txt 2>/dev/null 1>&2
 sync --file-system "${MNT_DIR}"/boot && sleep 0.5
 sudo ln -sf /lib/systemd/system/ssh.service "${MNT_DIR}"/root/etc/systemd/system/multi-user.target.wants/ssh.service
-[ -e "$HOME/.ssh/authorized_keys" ] && {mkdir -p "${MNT_DIR}"/root/home/pi/.ssh/ \
-  && cp "$HOME/.ssh/authorized_keys" "${MNT_DIR}"/root/home/pi/.ssh/ \
-  && chown -R 1000:1000 "${MNT_DIR}"/root/home/pi/.ssh/ \
-  && chmod 0700 "${MNT_DIR}"/root/home/pi/.ssh/ \
-  && chmod 0600 "${MNT_DIR}"/root/home/pi/.ssh/authorized_keys } \
-  || true
+if [ -e "$HOME/.ssh/authorized_keys" ]; then
+  mkdir -p "${MNT_DIR}"/root/home/pi/.ssh/
+  cp "$HOME/.ssh/authorized_keys" "${MNT_DIR}"/root/home/pi/.ssh/
+  chown -R 1000:1000 "${MNT_DIR}"/root/home/pi/.ssh/
+  chmod 0700 "${MNT_DIR}"/root/home/pi/.ssh/
+  chmod 0600 "${MNT_DIR}"/root/home/pi/.ssh/authorized_keys
+fi
 sync --file-system "${MNT_DIR}"/root && sleep 0.5
 sudo umount "${MNT_DIR}"/boot
 sudo umount "${MNT_DIR}"/root
