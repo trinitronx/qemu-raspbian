@@ -1,10 +1,13 @@
-include .env.mk
-export $(shell sed -e 's/^#.*//' -e 's/=.*//' -e '/^$$/d' .env.mk)
-
-IMG_QCOW2 := $(patsubst %.img,%.qcow2,$(IMG))
+.DEFAULT: run-raspi4
 
 TOP_BUILDDIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 MNT_DIR := $(TOP_BUILDDIR)/mnt
+
+include .env.mk
+export $(shell sed -e 's/^#.*//' -e 's/[:?]\?=.*//' -e '/^$$/d' .env.mk)
+
+IMG_QCOW2 := $(patsubst %.img,%.qcow2,$(IMG))
+
 QEMU_BOOT_FILES := kernel8.img bcm2710-rpi-3-b.dtb bcm2711-rpi-4-b.dtb
 
 export MNT_DIR
