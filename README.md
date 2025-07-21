@@ -139,7 +139,7 @@ To SSH to the VM when in bridged networking mode, check the VM's IP address
 visible in the `getty` login window.  Then run:
 
 ```shell
-ssh -o UserKnownHostsFile=/dev/null pi@$IP_HERE
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no pi@$IP_HERE
 ```
 
 An example `libvirt` network XML for the `default` network is:
