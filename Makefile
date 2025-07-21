@@ -7,6 +7,7 @@ TOP_BUILDDIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 MNT_DIR := $(TOP_BUILDDIR)/mnt
 QEMU_BOOT_FILES := kernel8.img bcm2710-rpi-3-b.dtb bcm2711-rpi-4-b.dtb
 
+export MNT_DIR
 
 $(IMG):
 	./get-rpi-img.sh
