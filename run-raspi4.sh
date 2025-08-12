@@ -12,9 +12,23 @@ args=(
     -m 2G
     #-smp 4,sockets=1,cores=4,threads=1
 
-    -serial pty
-#    -serial stdio
+    # QEMU monitor listening on /tmp/qga.sock in background
+    # -chardev socket,id=charchannel0,path=/tmp/qga.sock,server=on,wait=off
+    # -mon chardev=charchannel0,id=monitor,mode=readline
+
+    # Serial output to terminal stdout & logfile
+    # -chardev stdio,id=char0,logfile=/tmp/qemu-serial.log,signal=off
+    # -serial chardev:char0
+
+    # Serial output to background pseudoterminal & logged to file
+    -chardev pty,id=char0,logfile=/tmp/qemu-serial.log,signal=off
+    -serial chardev:char0
+
+    # Simple stdio/pty alternate options
+    # -serial pty
+    # -serial stdio
     -monitor stdio
+
 #    -boot order=c
     -d guest_errors,unimp,int
     -D /tmp/qemu-debug.log
