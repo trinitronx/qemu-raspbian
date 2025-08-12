@@ -63,6 +63,8 @@ downloading, modification, and QEMU setup automatically.
 - `wget`
 - `unxz` / `xz`
 - `bridge-utils` (for `libvirt` networking)
+- `bc` bash calculator - for floating point math support to calculate qcow2 SD
+  card image size
 
 ## Sponsor
 
@@ -139,7 +141,7 @@ To SSH to the VM when in bridged networking mode, check the VM's IP address
 visible in the `getty` login window.  Then run:
 
 ```shell
-ssh -o UserKnownHostsFile=/dev/null pi@$IP_HERE
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no pi@$IP_HERE
 ```
 
 An example `libvirt` network XML for the `default` network is:
@@ -225,11 +227,15 @@ QEMU boot files include:
   USB functionality
 - Both configurations include USB keyboard and mouse support
 - The image is pre-configured for headless operation with SSH enabled
-- The default password is insecure, and can be changed at the top of the `Makefile`
-  - Format is: `user:passwd-hash`
+- The default password is insecure, and can be changed in the `.env.mk` file
+  - `.env.mk` file format is GNU `Makefile` syntax
+  - `USER_PASSWD` Format is: `user:passwd-hash`
     - e.g. `pi:$6$6jHfJHU59JxxUfOS$k9natRNnu0AaeS/S9/IeVgSkwkYAjwJfGuYfnwsUoBxlNocOn.5yIdLRdSeHRiw8EWbbfwNSgx9/vUhu0NqF50`
   - Any '`$`' characters in the password hash must be escaped by doubling them: '`$$`'
+    - This is due to the [`Makefile` syntax][1]
     - For example, the above would become:
 
           pi:$$6$$6jHfJHU59JxxUfOS$$k9natRNnu0AaeS/S9/IeVgSkwkYAjwJfGuYfnwsUoBxlNocOn.5yIdLRdSeHRiw8EWbbfwNSgx9/vUhu0NqF50
 <!-- markdownlint-enable MD046  -->
+
+[1]: https://www.gnu.org/software/make/manual/html_node/Variables-in-Recipes.html

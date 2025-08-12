@@ -1,41 +1,22 @@
-IMG := 2025-05-13-raspios-bookworm-arm64-lite.img
-IMG_QCOW2 := $(patsubst %.img,%.qcow2,$(IMG))
+.DEFAULT: run-raspi4
 
 TOP_BUILDDIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 MNT_DIR := $(TOP_BUILDDIR)/mnt
+
+include .env.mk
+export $(shell sed -e 's/^#.*//' -e 's/[:?]\?=.*//' -e '/^$$/d' .env.mk)
+
+IMG_QCOW2 := $(patsubst %.img,%.qcow2,$(IMG))
+
 QEMU_BOOT_FILES := kernel8.img bcm2710-rpi-3-b.dtb bcm2711-rpi-4-b.dtb
 
-# Default insecure pi user password: raspberrypiqemu
-# Format: user:passwd-hash
-# Escape any '$' chars as '$$'
-USER_PASSWD := 'pi:$$y$$j9T$$2MdMxvUK1HOxHNKulVFf51$$GOVSJ4TrUwW5kyu.F7rxFbkDK23UbxUkysSsSW9jK08'
+export MNT_DIR
 
 $(IMG):
 	./get-rpi-img.sh
 
 $(IMG_QCOW2): $(IMG)
-	qemu-img convert -f raw -O qcow2 -o compression_type=zstd "$(IMG)"  "$(IMG_QCOW2)"
-	qemu-img resize "$(IMG_QCOW2)" 4G
-	sudo qemu-nbd -c /dev/nbd0  "$(IMG_QCOW2)"
-	echo  ',+' | sudo sfdisk  -N2  /dev/nbd0
-	sudo resize2fs /dev/nbd0p2
-	sudo mount -t vfat /dev/nbd0p1  "$(MNT_DIR)"/boot
-	sudo mount -t ext4 /dev/nbd0p2  "$(MNT_DIR)"/root
-	echo $(USER_PASSWD) | sudo tee "$(MNT_DIR)"/boot/userconf 2>/dev/null 1>&2
-	echo -e 'otg_mode=0\ndtoverlay=dwc2' | sudo tee -a "$(MNT_DIR)"/boot/config.txt 2>/dev/null 1>&2
-	sync --file-system "$(MNT_DIR)"/boot && sleep 0.5
-	sudo ln -sf /lib/systemd/system/ssh.service "$(MNT_DIR)"/root/etc/systemd/system/multi-user.target.wants/ssh.service
-	[ -e "$$HOME/.ssh/authorized_keys" ] && (mkdir -p "$(MNT_DIR)"/root/home/pi/.ssh/ \
-          && cp "$$HOME/.ssh/authorized_keys" "$(MNT_DIR)"/root/home/pi/.ssh/ \
-          && chown -R 1000:1000 "$(MNT_DIR)"/root/home/pi/.ssh/ \
-          && chmod 0700 "$(MNT_DIR)"/root/home/pi/.ssh/ \
-          && chmod 0600 "$(MNT_DIR)"/root/home/pi/.ssh/authorized_keys ) \
-          || true
-	sync --file-system "$(MNT_DIR)"/root && sleep 0.5
-	sudo umount "$(MNT_DIR)"/boot
-	sudo umount "$(MNT_DIR)"/root
-	sync $(IMG_QCOW2) && sleep 0.5
-	sudo qemu-nbd --disconnect /dev/nbd0
+	./prep-qcow2.sh
 
 $(QEMU_BOOT_FILES): | $(IMG_QCOW2)
 	sudo qemu-nbd -c /dev/nbd0  "$(IMG_QCOW2)"
