@@ -63,6 +63,8 @@ downloading, modification, and QEMU setup automatically.
 - `wget`
 - `unxz` / `xz`
 - `bridge-utils` (for `libvirt` networking)
+- `bc` bash calculator - for floating point math support to calculate qcow2 SD
+  card image size
 
 ## Sponsor
 
