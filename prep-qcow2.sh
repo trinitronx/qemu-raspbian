@@ -4,18 +4,41 @@
 set -u
 
 function isPowerOf2() {
-    local n=$1 i=0
-    for ((; n>1; n/=2, i++)); do :; done
-    (($1 - (2 ** $i) == 0))
+  local n=$1 i=0
+  if ! [[ "$n" =~ ^[0-9]+$ ]]; then
+    echo "Invalid input. Please enter a number." >&2
+    return -1
+  fi
+
+  # Invert result b/c bash success==0 -> truthiness is inverted
+  return $(( ! ( (n > 0) && (n & (n - 1)) == 0 ) ))
 }
 
 # Round a disk size number up to the next power of 2
 # SD card size has to be a power of 2, e.g. 16 GiB.
 function qcow2Pow2RoundUp() {
+  IMG_SIZE=$(qemu-img info  "$IMG_QCOW2" | grep 'virtual size:' | sed -e 's/.*\? (\([0-9]\+\) bytes)/\1/')
+  IMG_SIZE_GB="$(echo "scale=0; ( ${IMG_SIZE} / 1024 / 1024 / 1024 )" | bc)"
+  if isPowerOf2 "$IMG_SIZE" ; then
+    echo "$IMG_SIZE_GB"
+  else
+    bc -l <<EOBC
+      define log(x)
+      {
+        return(l(x)/l(10))
+      }
+      define ceil(x) {
+        auto os,xx;x=-x;os=scale;scale=0
+        xx=x/1;if(xx>x).=xx--
+        scale=os;return(-xx)
+      }
+      2^(ceil(log(${IMG_SIZE_GB})/log(2)))
+EOBC
+  fi
 }
 
 qemu-img convert -f raw -O qcow2 -o compression_type=zstd "${IMG}"  "${IMG_QCOW2}"
-qemu-img resize "${IMG_QCOW2}" 4G
+qemu-img resize "${IMG_QCOW2}" $(qcow2Pow2RoundUp)G
 sudo qemu-nbd -c /dev/nbd0  "${IMG_QCOW2}"
 echo  ',+' | sudo sfdisk  -N2  /dev/nbd0
 sudo resize2fs /dev/nbd0p2
