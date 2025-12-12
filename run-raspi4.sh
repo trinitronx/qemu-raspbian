@@ -30,8 +30,8 @@ args=(
     -monitor stdio
 
 #    -boot order=c
-    -d guest_errors,unimp,int
-    -D /tmp/qemu-debug.log
+    # -d guest_errors,unimp,int
+    # -D /tmp/qemu-debug.log
 
 #     -object '{"qom-type":"memory-backend-ram","id":"pc.ram","size":4294967296}'
 )
