@@ -54,7 +54,11 @@ args+=(
               bcm2708_fb.fbdepth=16 bcm2708_fb.fbswap=1 vc_mem.mem_base=0x3f000000
               vc_mem.mem_size=0x3f600000 dwc_otg.lpm_enable=0
               root=/dev/mmcblk1p2 rootfstype=ext4 rootdelay=1 fsck.repair=yes
-              verbosity=2 net.ifnames=0"
+              verbosity=2 net.ifnames=0
+              plymouth.ignore-serial-consoles
+              bcm2835_mmal_vchiq.debug=1 drm.debug=1 modules_load=vc4,drm
+              dma.dmachans=0x7f35"
+
 
 # Other kernel cmdline options:
 # dwc2 network
