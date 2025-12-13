@@ -64,6 +64,20 @@ args+=(
 
 #    -nographic
 
+     # 2d virtio GPU
+     #-device virtio-gpu
+
+     # VirGL 3d virtio GPU with Vulkan
+     # (venus translation layer)
+     # Reference:
+     #   - https://gist.github.com/peppergrayxyz/fdc9042760273d137dddd3e97034385f#file-qemu-vulkan-virtio-md
+     #   - For this, a custom kernel supporting CONFIG_DRM_VIRTIO_GPU and the
+     #     Raspbian full image is needed
+     #-device virtio-gpu-gl-pci,hostmem=8G,blob=true,venus=true
+     #-device virtio-gpu-gl-device,hostmem=8G,blob=true,venus=true
+     #-display gtk,gl=on,show-cursor=on
+     #-vga none
+
 #    -no-user-config
 #    -nodefaults
 )
