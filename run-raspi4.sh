@@ -9,7 +9,12 @@ args=(
     # -accel kvm
     # -cpu host
     -smp 4
-    -m 2G
+    -m 2G,maxmem=8G
+    #-object memory-backend-ram,id=mem0,size=8G
+    #-device virtio-mem-pci,id=vm0,memdev=mem0,node=0
+    #-device virtio-mem
+    #-device virtio-balloon-device,id=vm0,memdev=mem0,deflate-on-oom=on
+
     #-smp 4,sockets=1,cores=4,threads=1
 
     # QEMU monitor listening on /tmp/qga.sock in background
@@ -44,7 +49,8 @@ args+=(
     -uuid db5a91ef-fc42-4954-a9e4-bd9c9c24b502
     -machine raspi4b
     -kernel kernel8.img
-    -dtb bcm2711-rpi-4-b.mod.dtb
+    # -dtb bcm2711-rpi-4-b.mod.dtb
+    -dtb bcm2711-rpi-4-b.mod.pci.dtb
     #-append "console=ttyAMA0,115200 earlyprintk loglevel=8 dwc_otg.lpm_enable=0 root=/dev/mmcblk0p2 rw rootwait rootfstype=ext4"
     -append  "rw earlyprintk loglevel=8 console=ttyAMA1,115200 console=tty1
               earlycon=pl011,0xfe201000
